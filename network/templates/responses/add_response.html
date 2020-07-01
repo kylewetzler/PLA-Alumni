@@ -1,0 +1,58 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container-fluid">
+
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Manually Add a Response</h1>
+        </div>
+        <p>Enter the response information below:</p>
+        <div class="row" style="padding-bottom: 1em">
+            <div class="col-lg-8">
+                <a href="{% url 'home' %}" class="btn btn-secondary btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-arrow-left"></i>
+                    </span>
+                    <span class="text">Back to All Responses</span>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Response</h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <p><b>Name:</b></p> <input name="full_name"/>
+                            <p><b>Email:</b></p> <input name="email"/>
+                            <p><b>Hometown:</b></p> <input name="hometown"/>
+                            <p><b>Current Residence:</b></p> <input name="residence"/>
+                            <p><b>PSU Degree:</b></p> <input name="degree"/>
+                            <p><b>Did You Change Majors:</b></p> <input name="changed_major"/>
+                            <p><b>Original Major:</b></p> <input name="original_major"/>
+                            <p><b>Leadership Positions Held:</b></p> <textarea name="leadership" type="text"></textarea>
+                            <p><b>Graduation Date:</b></p> <input name="grad_date"/>
+                            <p><b>Current Occupation:</b></p> <textarea name="current_occupation"></textarea>
+                            <p><b>Will You Stay in This Position Long-Term:</b></p> <textarea
+                                    name="career_long_term"></textarea>
+                            <p><b>Was This Your Expected Career:</b></p> <textarea name="expected_career"></textarea>
+                            <p><b>Career Path, Described:</b></p> <input name="career_path"/>
+                            <p><b>Favorite Book, Podcast, or Movie:</b></p> <input name="favorites"/>
+                            <p><b>Ways Willing to Mentor:</b></p> <input name="mentorship_selections"/>
+                            <p><b>Preferred Conference Location:</b></p> <input name="conference_location"/>
+                            <p><b>Preferred Conference Topics:</b></p> <textarea name="conference_topics"></textarea>
+                            <p><b>Best Contact Method:</b></p> <input name="contact_method"/>
+                            <p></p>
+                            <button class="btn btn-warning btn-user btn-block" type="submit" name="AddResponseButton">
+                                Add Response
+                            </button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

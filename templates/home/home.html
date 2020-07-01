@@ -1,0 +1,106 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">PLA Alumni Network & Mentoring Dashboard</h1>
+        </div>
+        <p>Choose an Action Below:</p>
+        <div class="row">
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-bottom-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">View by State</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Here</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-map fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-bottom-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">View by Degree</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Here</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-graduation-cap fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-bottom-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">View by Career</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Here</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-user-tie fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-bottom-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">View by Mentoring</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Here</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-project-diagram fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card shadow mb-4">
+                    <a href="#sections" class="d-block card-header py-3 collapsed" data-toggle="collapse"
+                       role="button" aria-expanded="true" aria-controls="sections">
+                        <h6 class="m-0 font-weight-bold text-primary">Responses</h6>
+                    </a>
+                    <div class="collapse" id="sections">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dataTable" id="dataTable" width="100%"
+                                   cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                                   style="width: 100%; margin-top: 1em;">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                {% for response in responses %}
+                                                <tr role="row" class="odd">
+                                                    <td>{{ response.full_name }}</td>
+                                                    <td>{{ response.degree }}</td>
+                                                    <td><a href="{% url 'view_response' alum_id=response.id %}" class="btn btn-secondary">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-arrow-right"></i>
+                    </span>
+                    <span class="text">View Response</span>
+                  </a></td>
+                                                </tr>
+                                            {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

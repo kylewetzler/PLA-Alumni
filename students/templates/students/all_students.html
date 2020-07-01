@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    <link href="{% static 'css/chat.css' %}" rel="stylesheet">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">You're Viewing All PLA Students</h1>
+    </div>
+    <p>Click on a student's name icon below to start messaging them or view their profile</p>
+    <hr>
+    <div class="row">
+        <div class="col-lg-12">
+                <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                  <h6 class="m-0 font-weight-bold text-primary">Sophomore Class</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+                <div class="collapse show" id="collapseCardExample" style="">
+                  <div class="card-body">
+                    <div class="row">
+                        {% for student in students %}
+                        <div class="col-lg-4 mb-4">
+                            <div class="card border-bottom-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ student.first_name|capfirst }} {{ student.last_name|capfirst }}</div>
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mt-1">
+                                                Major: (NOT DONE YET)
+                                            </div>
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase">
+                                                {{ student.email }}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="user">
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <div class="container mt-3">
+                                                        <img id="img-18" class="alumni-user-icon shadow-lg">
+                                                        <div class="centered mt-2">
+                                                            {{ student.first_name|make_list|first|capfirst }}{{ student.last_name|make_list|first|capfirst }}
+                                                        </div>
+                                                </div>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                         aria-labelledby="dropdownMenuLink" x-placement="top-end"
+                                                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-159px, -158px, 0px);">
+                                                        <div class="dropdown-header">Options:</div>
+                                                        <a class="dropdown-item" href="{% url 'start_conversation' participant_id=student.id %}">Message {{ student.first_name|capfirst }}</a>
+                                                        <a class="dropdown-item" href="#">View Their Profile</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% block content %}
+    <div class="container-fluid">
+
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Response from {{ response.full_name }}</h1>
+        </div>
+        <p><b>Best Contact Method:</b> {{ response.contact_method }}</p>
+        <p>View the response information below:</p>
+        <div class="row" style="padding-bottom: 1em">
+            <div class="col-lg-8">
+                <a href="{% url 'home' %}" class="btn btn-secondary btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-arrow-left"></i>
+                    </span>
+                    <span class="text">Back to All Responses</span>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Response</h6>
+                    </div>
+                    <div class="card-body">
+                        <p><b>Name:</b> {{ response.full_name }}</p>
+                        <p><b>Email:</b> {{ response.email }}</p>
+                        <p><b>Hometown:</b> {{ response.hometown }}</p>
+                        <p><b>Current Residence:</b> {{ response.residence }}</p>
+                        <p><b>PSU Degree:</b> {{ response.degree }}</p>
+                        <p><b>Did You Change Majors:</b> {{ response.changed_major }}</p>
+                        <p><b>Original Major:</b> {{ response.original_major }}</p>
+                        <p><b>Leadership Positions Held:</b> {{ response.leadership }}</p>
+                        <p><b>Graduation Date:</b> {{ response.grad_date }}</p>
+                        <p><b>Current Occupation:</b> {{ response.current_occupation }}</p>
+                        <p><b>Will You Stay in This Position Long-Term:</b> {{ response.career_long_term }}</p>
+                        <p><b>Was This Your Expected Career:</b> {{ response.expected_career }}</p>
+                        <p><b>Career Path, Described:</b> {{ response.career_path }}</p>
+                        <p><b>Favorite Book, Podcast, or Movie:</b> {{ response.favorites }}</p>
+                        <p><b>Ways Willing to Mentor:</b> {{ response.mentorship_selections }}</p>
+                        <p><b>Preferred Conference Location:</b> {{ response.conference_location }}</p>
+                        <p><b>Preferred Conference Topics:</b> {{ response.conference_topics }}</p>
+                        <p><b>Best Contact Method:</b> {{ response.contact_method }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

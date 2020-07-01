@@ -1,0 +1,343 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    <link href="{% static 'css/chat.css' %}" rel="stylesheet">
+            {% for error in errors %}
+            <div class="alert alert-danger text-center" role="alert">
+                <strong>Oh snap!</strong> {{ error }}
+            </div>
+            {% endfor %}
+
+
+        <div class="row gutters">
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                <div class="card shadow m-0">
+
+                    <!-- Row start -->
+                    <div class="row no-gutters">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+                            <div class="users-container">
+                                <div class="container">
+                                    <div class="card d-none d-lg-block border-0">
+                                        <div class="card-body shadow">
+                                            <div class="row no-gutters align-items-center text-center">
+                                                <div class="h5 text-uppercase m-auto">Message Center</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <a href="#" data-toggle="modal"
+                                       data-target="#exampleModal"
+                                       class="btn btn-success btn-block d-none d-md-block text-center text-truncate shadow-lg
+                                            bg-white" style="color: green;">
+                                        <i class="fab fa-fw"></i>New Conversation</a>
+                                    <a href="#" data-toggle="modal"
+                                       data-target="#exampleModal"
+                                       class="btn btn-success btn-circle d-md-none d-lg-none shadow-lg">
+                                        <i class="fas fa-plus"></i></a>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Start a New
+                                                        Conversation</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6>Who do you want to talk to?</h6>
+                                                    <form method="post">
+                                                        {% csrf_token %}
+                                                        <select id="participant_id" name="participant_id"
+                                                                class="form-control">
+                                                            <option>---</option>
+                                                            {% for user in users %}
+                                                                <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        <button type="submit" class="mt-1 btn btn-primary">Start the
+                                                            Conversation
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <ul id="conv-list" class="users">
+                                    {% for conversation in conversations %}
+                                        <a id="conv-{{ conversation.uuid }}" class="text-gray-800" href="{% url 'room' conversation_uuid=conversation.uuid %}"
+                                       style="text-decoration: none;">
+                                        {% if conversation.uuid|slugify == id %}
+                                            <li class="person active-user" data-chat="person1">
+                                                {% else %}
+                                            <li class="person" data-chat="person1">
+                                        {% endif %}
+
+                                            {% if request.user.id == conversation.participant_1.id %}
+                                        <div class="user">
+                                            <div class="container">
+                                                <img id="img-{{ conversation.uuid }}" class="chat-user-icon shadow-lg">
+                                                <div class="centered">{{ conversation.participant_2.first_name|make_list|first|capfirst }}{{ conversation.participant_2.last_name|make_list|first|capfirst }}</div>
+                                            </div>
+                                        </div>
+                                        <p class="name-time">
+                                                <span class="name">{{ conversation.participant_2.first_name|capfirst }} {{ conversation.participant_2.last_name|capfirst }}</span>
+                                        </p>
+                                        {% elif request.user.id == conversation.participant_2.id %}
+                                        <div class="user">
+                                            <div class="container">
+                                                <img id="img-{{ conversation.uuid }}" class="chat-user-icon shadow-lg">
+                                                <div class="centered">{{ conversation.participant_1.first_name|make_list|first }}{{ conversation.participant_1.last_name|make_list|first }}</div>
+                                            </div>
+                                        </div>
+                                        <p class="name-time">
+                                                <span class="name">{{ conversation.participant_1.first_name|capfirst }} {{ conversation.participant_1.last_name|capfirst }}</span>
+                                        </p>
+                                            {% endif %}
+                                    </li>
+                                        </a>
+                                    {% endfor %}
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+                            <div class="selected-user">
+                            <span>To: <span
+                                    class="name">{{ recipient.first_name|capfirst }} {{ recipient.last_name|capfirst }}</span></span>
+                            </div>
+                            <div class="chat-container">
+                                {% if conversation_id %}
+                                    <ul id="load-all" class="chat-box chatContainerScroll">
+                                        <a id="load-all-messages" href="#"><p style="text-align: center">Load All
+                                            Messages</p></a>
+                                    </ul>
+                                {% else %}
+                                    <ul id="load-all" class="chat-box chatContainerScroll">
+                                        <p style="text-align: center">Select a Conversation</p></a>
+                                    </ul>
+                                {% endif %}
+                                <ul id="all-loaded" class="chat-box chatContainerScroll">
+                                </ul>
+                                <ul id="chat-log" class="chat-box chatContainerScroll">
+                                </ul>
+                            </div>
+                            <hr>
+                            <div class="container" style="position: relative;  padding-bottom: 1em">
+                                <div class="form-group mt-3 mb-0">
+                                    <div class="row">
+                                        <div class="col-lg-10">
+                                            <textarea class="pl-1 w-100" id="chat-message-input" type="text"></textarea>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <button id="chat-message-submit" value="Send"
+                                                    class="btn chat-right-background btn-user" type="submit">Send
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row end -->
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    {{ room_name|json_script:"room-name" }}
+    <script src="{% static 'js/reconnecting-websocket.js' %}"></script>
+    <script>
+
+        {% if conversation_id %}
+            var roomName = {{ conversation_id }};
+        {% else %}
+            var roomName = 0;
+        {% endif %}
+
+        const chatSocket = new ReconnectingWebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+
+        chatSocket.onopen = function (e) {
+            fetchMessages();
+        };
+
+        function getRoomName(){
+            return roomName;
+        }
+
+        function clearChatLog() {
+            document.querySelector('#chat-log').innerHTML = '';
+        }
+
+        function fetchMessages() {
+            chatSocket.send(JSON.stringify({
+                'command': 'fetch_messages',
+                'conversation_id': {{ conversation_id }},
+                'user_id': {{ request.user.id }}
+            }));
+        }
+
+        function fetchAllMessages() {
+            document.querySelector('#load-all').innerHTML = '';
+
+            var pTag = document.createElement('p');
+            pTag.style = "text-align: center;"
+            pTag.textContent = "Start of Conversation";
+            document.querySelector('#all-loaded').appendChild(pTag);
+
+            clearChatLog();
+            chatSocket.send(JSON.stringify({
+                'command': 'fetch_all_messages',
+                'conversation_id': {{ conversation_id }},
+                'user_id': {{ request.user.id }}
+            }));
+        }
+
+        function createMessage(data) {
+            var author = data['author'];
+
+            var divTag = document.createElement('div');
+
+            var msgListTag = document.createElement('li');
+            var chatTextTag = document.createElement('div');
+
+            var chatTimeTag = document.createElement('div');
+            chatTimeTag.className = "chat-hour d-none d-md-block";
+
+            var datetime = data['timestamp'];
+            var localdate = new Date(datetime);
+
+            options = {month: "short", day: "numeric", hour: "numeric", minute: "numeric"};
+
+            chatTimeTag.textContent = localdate.toLocaleDateString("en-US", options);
+
+            var imgTag = document.createElement('img');
+            chatTextTag.textContent = data.content;
+            if ({{ request.user.id }} ===
+            author
+        )
+            {
+                msgListTag.className = "chat-right";
+                chatTextTag.className = "chat-text chat-right-background";
+                msgListTag.appendChild(chatTimeTag);
+                msgListTag.appendChild(chatTextTag);
+            }
+        else
+            {
+                divTag.className = "float-left";
+                msgListTag.className = "chat-left";
+                chatTextTag.className = "chat-text chat-left-background";
+                msgListTag.appendChild(chatTextTag);
+                msgListTag.appendChild(chatTimeTag);
+            }
+
+            document.querySelector('#chat-log').appendChild(msgListTag);
+
+        }
+
+        function setStartOfConversation(){
+            document.querySelector('#load-all').innerHTML = '';
+            var pTag = document.createElement('p');
+            pTag.style = "text-align: center;";
+            pTag.textContent = "Start of Conversation";
+            document.querySelector('#all-loaded').appendChild(pTag);
+        }
+
+
+        chatSocket.onmessage = function (e) {
+            var bottomTag = document.getElementById('chat-bottom');
+            if (bottomTag) {
+                bottomTag.parentElement.removeChild(bottomTag);
+            }
+            var data = JSON.parse(e.data);
+            data = data['message'];
+            console.log(data);
+            if (data['command'] === 'messages') {
+                for (let i = 0; i < data['messages'].length; i++) {
+                    if (i === (data['messages'].length - 11)) {
+                        var bottomTag = document.createElement('li');
+                        bottomTag.id = 'chat-bottom';
+                        document.querySelector("#chat-log").appendChild(bottomTag);
+                    }
+                    createMessage(data['messages'][i]);
+                }
+                if (data['options'] === 'less_than_10'){
+                    setStartOfConversation();
+                }
+            } else if (data['command'] === 'new_message') {
+                var imgTag = document.getElementById("img-" + {{ conversation_id }});
+                imgTag.className = 'chat-user-icon shadow-lg';
+                createMessage(data['message']);
+            } else if (data['command'] === 'no_messages'){
+                setStartOfConversation();
+            } else if (data['command'] === 'new_notification'){
+                fetchNotifications();
+            }
+
+            var bottomTag = document.createElement('li');
+            bottomTag.id = 'chat-bottom';
+            document.querySelector("#chat-log").appendChild(bottomTag);
+            document.getElementById('chat-bottom').scrollIntoView();
+            document.getElementById('page-top').scrollIntoView();
+
+        };
+
+
+        chatSocket.onclose = function (e) {
+            clearChatLog();
+            console.error('Chat socket closed unexpectedly');
+        };
+
+
+        document.querySelector('#load-all-messages').onclick = function (e) {
+            fetchAllMessages();
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            if (message && messageInputDom){
+                chatSocket.send(JSON.stringify({
+                'command': 'new_message',
+                'message': message,
+                'conversation_id': {{ conversation_id }},
+                'from': {{ user.id }}
+            }));
+            messageInputDom.value = '';
+            }
+        };
+    </script>
+{% endblock %}

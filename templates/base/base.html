@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css"
+          media="all"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"
+            type="text/javascript"></script>
+    <script src="{% static 'js/reconnecting-websocket.js' %}"></script>
+
+    {% block title %}
+    {% endblock %}
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+
+    <ul class="navbar-nav sidebar sidebar-dark accordion sticky-sidebar {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}toggled{% endif %}" id="accordionSidebar" style="
+            background-image: url({% static 'img/old_main_tower.png' %}), linear-gradient(180deg, #041E42 10%, #224abe 100%);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: bottom;
+            z-index: 5;
+            ">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+            <div class="sidebar-brand-icon">
+                <i class="fas fa-book-reader"></i>
+            </div>
+            <div class="sidebar-brand-text mx-2">PLA</div>
+        </a>
+
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+        <li class="nav-item active">
+            <a class="nav-link" href="{% url 'home' %}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></a>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">Messaging</div>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'chat_home' %}">
+                <i class="fas fa-fw fa-inbox"></i>
+                <span>Message Center</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">
+
+
+        <div class="sidebar-heading">Your Stuff</div>
+
+
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Account"
+               aria-expanded="true" aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-id-card"></i>
+                <span>Account</span>
+            </a>
+            <div id="Account" class="collapse" aria-labelledby="headingUtilities"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{% url 'profile' user_id=user.id %}">View Account</a>
+                    <a class="collapse-item" href="#">Your PLA Information</a>
+                    <a class="collapse-item" href="{% url 'password_change' %}">Change Password</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">Alumni Network</div>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#People"
+               aria-expanded="true" aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-graduation-cap"></i>
+                <span>Alumni</span>
+            </a>
+            <div id="People" class="collapse" aria-labelledby="headingUtilities"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{% url 'all_alumni' %}">View All Alumni</a>
+                    <a class="collapse-item" href="{% url 'home' %}">View All Data</a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">Current Students</div>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Students"
+               aria-expanded="true" aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-project-diagram"></i>
+                <span>Students</span>
+            </a>
+            <div id="Students" class="collapse" aria-labelledby="headingUtilities"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{% url 'all_students' %}">View All Students</a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Nav Item - Alerts -->
+
+                    <li class="nav-item dropdown no-arrow mx-1">
+
+                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-bell fa-fw"></i>
+                            <!-- Counter - Alerts -->
+                            <span class="badge badge-danger badge-counter">{{ num_alerts }}</span>
+                        </a>
+                        <!-- Dropdown - Alerts -->
+                        <div class="collapse dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="alertsDropdown">
+                            <h6 class="dropdown-header">
+                                Alerts Center
+                            </h6>
+                            <a class="dropdown-item text-center small text-gray-500" href="#">No More New Alerts</a>
+                        </div>
+                    </li>
+
+                    <!-- Nav Item - Messages -->
+                    <li class="nav-item dropdown no-arrow mx-1">
+                        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-envelope fa-fw"></i>
+                            <!-- Counter - Messages -->
+                            <span id="message-counter" class="badge badge-danger badge-counter"></span>
+                        </a>
+                        <!-- Dropdown - Messages -->
+                        <div id="message-center" class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="messagesDropdown">
+                            <h6 class="dropdown-header">
+                                Message Center
+                            </h6>
+                        </div>
+                    </li>
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }} {{ user.last_name }}</span>
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+
+                            <a class="dropdown-item" href="{% url 'profile' user_id=user.id %}">
+                                <i class="fas fa-id-card fa-sm fa-fw mr-2 text-gray-400"></i>
+                                View Account
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Edit Account
+                            </a>
+                            <a class="dropdown-item" href="{% url 'password_change' %}">
+                                <i class="fas fa-wrench fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Change Password
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+            <script>
+
+                var notificationName = 1;
+
+                const notificationSocket = new ReconnectingWebSocket(
+                    'ws://'
+                    + window.location.host
+                    + '/ws/notifications/'
+                    + notificationName
+                    + '/'
+                );
+
+                notificationSocket.onopen = function (e) {
+                    fetchNotifications();
+                }
+
+                function fetchNotifications() {
+                    notificationSocket.send(JSON.stringify({
+                        'command': 'fetch_notifications',
+                    }));
+                }
+
+                function createNotification(notification){
+
+                    console.log(notification);
+                    var currentlyOpen = false;
+                    try {
+                        console.log(notification.conversation_id);
+                        var imgTag = document.getElementById("img-" + notification.conversation_id);
+
+                        if ( parseInt(roomName) === notification.conversation_id){
+                            currentlyOpen = true;
+                            imgTag.className = 'chat-user-icon shadow-lg';
+                            notificationSocket.send(JSON.stringify({
+                                'command': 'delete_notification',
+                                'recipient_id': notification.recipient,
+                                'conversation_id': notification.conversation_id,
+                            }));
+                            return false;
+                        }
+                        else{
+                            imgTag.className = 'chat-user-icon-notify shadow-lg';
+                        }
+                        var convTag = document.getElementById("conv-" + notification.conversation_id);
+                        var convList = document.getElementById('conv-list');
+                        convList.insertBefore(convTag, convList.firstChild);
+                    }
+                    catch (e) {
+                        try{
+                            var imgTag = document.getElementById("img-" + notification.conversation_id);
+                            imgTag.className = 'chat-user-icon-notify shadow-lg';
+                            var convTag = document.getElementById("conv-" + notification.conversation_id);
+                            var convList = document.getElementById('conv-list');
+                            convList.insertBefore(convTag, convList.firstChild);
+                        }
+                        catch (e) {
+                            console.log(e);
+                        }
+                    }
+
+                    if (!currentlyOpen){
+                        var aTag = document.createElement('a');
+                        aTag.className = "dropdown-item d-flex align-items-center";
+                        aTag.href = "/chat/" + notification.conversation_id;
+                        var divTag1 = document.createElement('div');
+                        divTag1.className = 'mr-3';
+                        var divTag2 = document.createElement('div');
+                        divTag2.className = 'icon-circle bg-primary';
+                        var iTag = document.createElement('div');
+                        iTag.className = 'fas fa-file-alt text-white';
+
+                        divTag2.appendChild(iTag);
+                        divTag1.appendChild(divTag2);
+                        aTag.appendChild(divTag1);
+
+                        var divTag3 = document.createElement('div');
+                        var spanTag = document.createElement('span');
+                        spanTag.className = 'font-weight-bold';
+                        spanTag.textContent = "New Message from " + notification.name;
+
+                        divTag3.appendChild(spanTag);
+                        aTag.appendChild(divTag3);
+
+                        document.querySelector('#message-center').appendChild(aTag);
+                    }
+                    return true;
+
+                }
+
+                notificationSocket.onmessage = function (e) {
+                    document.querySelector('#message-center').innerHTML = '';
+
+                    var hTag = document.createElement('h');
+                    hTag.className = 'dropdown-header';
+                    hTag.textContent = 'Message Center';
+                    document.querySelector('#message-center').appendChild(hTag);
+
+
+                    var data = JSON.parse(e.data);
+                    data = data['message'];
+                    if (data['command'] === 'notifications'){
+                        var notifications = data['notifications'];
+                        var notificationCount = 0;
+                        for (let i = 0; i < data['notifications'].length; i++) {
+                            if ({{ request.user.id }} === data['notifications'][i].recipient){
+                                if (createNotification(notifications[i])){
+                                    notificationCount++;
+                                }
+                            }
+                        }
+                        if (notificationCount > 0){
+                            document.querySelector('#message-counter').textContent = notificationCount;
+                        }
+                        var aTag = document.createElement('a');
+                        aTag.className = "dropdown-item text-center small text-gray-500";
+                        aTag.textContent = "That's all of 'em";
+                        document.querySelector('#message-center').appendChild(aTag);
+
+                    }
+                    else if (data['command'] === 'new_notification')
+                    {
+                        fetchNotifications();
+                    }
+                }
+            </script>
+                {% block content %}
+
+
+                {% endblock %}
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; PLA 2020</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+</body>
+
+</html>

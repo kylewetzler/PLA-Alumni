@@ -1,0 +1,50 @@
+.empty-card{
+    padding: 5rem;
+    color: red;
+}
+
+.no-outline{
+    border: none;
+}
+
+.dashboard-card{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.bg-gradient-penn-state {
+  background-color: #041E42;
+  background-image: linear-gradient(180deg, #041E42 10%, #224abe 100%);
+  background-size: cover;
+}
+
+.bg-penn-state{
+    background-color: #224abe;
+}
+
+.bg-gray {
+    background-color: #041E4269;
+}
+
+.sticky-sidebar {
+    height: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+}
+
+.alumni-user-icon {
+    border-radius: 50%;
+    border: 2px solid #007AFF;
+    width: 48px;
+    height: 48px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    background: white;
+}
+
+.dropdown-toggle::after{
+    content: none;
+}
