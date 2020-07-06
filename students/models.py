@@ -11,3 +11,8 @@ class OfferedMajor(models.Model):
 
 class StudentOrganization(models.Model):
     name = models.CharField(max_length=400)
+
+
+class GraduationDate(models.Model):
+    semester = models.CharField(max_length=6)
+    year = models.IntegerField()
