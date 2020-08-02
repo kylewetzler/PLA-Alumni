@@ -107,9 +107,11 @@ def room(request, conversation_uuid):
 
 def start_conversation(request, participant_id):
     user = request.user
-    participant = User.objects.get(id=participant_id)
     conversations = get_conversations(user)
+    participant = User.objects.get(id=participant_id)
     errors = []
+    if user.id == int(participant_id):
+        return redirect('chat_home')
     if not existing_conversation(user, participant, conversations, errors):
         new_id = new_conversation(user, participant.id)
         return redirect('room', conversation_uuid=new_id)

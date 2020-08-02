@@ -40,6 +40,7 @@ class MyAccountManager(BaseUserManager):
 class Account(AbstractBaseUser):
 
     email = models.EmailField(verbose_name="email", max_length=60, unique=True, blank=False)
+    phone_number = models.CharField(max_length=15)
     date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
     last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
     last_visit = models.DateTimeField(auto_now=True, blank=True)
@@ -69,9 +70,40 @@ class Account(AbstractBaseUser):
         return True
 
 
-class USStates(models.Model):
+class USState(models.Model):
     name = models.CharField(max_length=50)
     code = models.CharField(max_length=2)
 
     def __str__(self):
         return self.code
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=2)
+
+    def __str__(self):
+        return self.code
+
+
+class City(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+class Location(models.Model):
+    city = models.ForeignKey(City, on_delete=models.DO_NOTHING)
+    state = models.ForeignKey(USState, on_delete=models.DO_NOTHING)
+    country = models.ForeignKey(Country, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.city + ', ' + self.state + ' ' + self.country
+
+
+class ContactMethod(models.Model):
+    method = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.method

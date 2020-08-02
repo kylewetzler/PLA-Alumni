@@ -1,4 +1,4 @@
-from students.models import Major
+from students.models import OfferedMajor
 
 filepath = 'data/all_majors.html'
 with open(filepath) as fp:
