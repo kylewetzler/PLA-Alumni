@@ -31,6 +31,9 @@ class Degree(models.Model):
     alumnus = models.ForeignKey(User, blank=False, related_name='alumnus_degree', on_delete=models.CASCADE)
     degree = models.ForeignKey(OfferedMajor, on_delete=models.DO_NOTHING)
 
+    def __str__(self):
+        return self.degree
+
 
 class InvolvementOrLeadershipPosition(models.Model):
     alumnus = models.ForeignKey(User, blank=False, related_name='alumnus_position', on_delete=models.CASCADE)
@@ -41,15 +44,24 @@ class InvolvementOrLeadershipPosition(models.Model):
 class JobSector(models.Model):
     sector = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.sector
+
 
 class Occupation(models.Model):
     sector = models.ForeignKey(JobSector, on_delete=models.DO_NOTHING)
     description = models.TextField()
 
+    def __str__(self):
+        return self.sector
+
 
 class Expectation(models.Model):
     expected = models.BooleanField(default=True)
     description = models.TextField()
+
+    def __str__(self):
+        return self.expected
 
 
 class AlumniData(models.Model):
@@ -70,9 +82,6 @@ class AlumniData(models.Model):
     mentor_ugrad_opportunities = models.BooleanField(default=False)
     mentor_connections = models.BooleanField(default=False)
     mentor_moving = models.BooleanField(default=False)
-    conference_location = models.ForeignKey(Location, related_name='conference_locaiton', on_delete=models.DO_NOTHING)
+    conference_location = models.ForeignKey(Location, related_name='conference_location', on_delete=models.DO_NOTHING)
     conference_topics = models.TextField()
     contact_method = models.ForeignKey(ContactMethod, on_delete=models.DO_NOTHING)
-
-
-
