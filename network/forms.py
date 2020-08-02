@@ -10,8 +10,3 @@ class AlumniDataForm(ModelForm):
                   'mentor_cover_letter', 'mentor_job_search', 'mentor_connections', 'mentor_moving',
                   'mentor_ugrad_opportunities', 'conference_location', 'conference_topics', 'contact_method']
 
-
-class HometownForm(ModelForm):
-    class Meta:
-        model = Location
-        fields
